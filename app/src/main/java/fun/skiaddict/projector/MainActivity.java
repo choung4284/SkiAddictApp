@@ -19,12 +19,25 @@ public class MainActivity extends Activity {
     private CourseStore.Category selected=CourseStore.Category.ALPINE;
     private final List<View> categoryCards=new ArrayList<>();
     private LinearLayout courseBox;
+    private TextView projectorStatus;
+    private ProjectorDisplayHost projectorHost;
 
     @Override protected void onCreate(Bundle b){
         super.onCreate(b);
         setContentView(build());
         updateCategories();
         renderCourses();
+        projectorHost=new ProjectorDisplayHost(this,(connected,name)->runOnUiThread(()->updateProjectorStatus(connected,name)));
+    }
+
+    @Override protected void onResume(){
+        super.onResume();
+        if(projectorHost!=null) projectorHost.start();
+    }
+
+    @Override protected void onPause(){
+        if(projectorHost!=null) projectorHost.stop();
+        super.onPause();
     }
 
     private int widthDp(){ return getResources().getConfiguration().screenWidthDp; }
@@ -63,16 +76,24 @@ public class MainActivity extends Activity {
     private View header(){
         LinearLayout h=new LinearLayout(this);
         h.setGravity(Gravity.CENTER_VERTICAL);
+
         TextView brand=Ui.text(this,"Ski Addict",clamp(widthDp()/30,22,30),Ui.RED,true);
         h.addView(brand,new LinearLayout.LayoutParams(Ui.dp(this,clamp(widthDp()/4,170,250)),ViewGroup.LayoutParams.MATCH_PARENT));
-        TextView sub=Ui.text(this,"HOME  •  21 COURSES  •  PHONE / TABLET SAME LAYOUT",clamp(widthDp()/70,10,14),Ui.NAVY,true);
+
+        TextView sub=Ui.text(this,"HOME • 21 COURSES • PHONE / TABLET SAME LAYOUT",clamp(widthDp()/70,10,14),Ui.NAVY,true);
         h.addView(sub,new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,1f));
-        LinearLayout status=Ui.card(this);
-        status.setGravity(Gravity.CENTER);
-        status.addView(Ui.text(this,"● Projector",11,Ui.NAVY,true));
-        status.addView(Ui.text(this,"Ready",10,Color.rgb(0,150,80),false));
-        h.addView(status,new LinearLayout.LayoutParams(Ui.dp(this,clamp(widthDp()/6,95,145)),Ui.dp(this,48)));
+
+        projectorStatus=Ui.text(this,"● HDMI\nNot connected",10,Ui.MUTED,true);
+        projectorStatus.setGravity(Gravity.CENTER);
+        projectorStatus.setBackground(Ui.round(this,Color.WHITE,14,Ui.BORDER));
+        h.addView(projectorStatus,new LinearLayout.LayoutParams(Ui.dp(this,clamp(widthDp()/6,105,155)),Ui.dp(this,48)));
         return h;
+    }
+
+    private void updateProjectorStatus(boolean connected,String name){
+        if(projectorStatus==null)return;
+        projectorStatus.setText(connected?"● HDMI Projector\nConnected":"● HDMI Projector\nNot connected");
+        projectorStatus.setTextColor(connected?Color.rgb(0,150,80):Ui.MUTED);
     }
 
     private View categoryPanel(){

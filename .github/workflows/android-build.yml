@@ -29,6 +29,6 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: SkiAddictApp-v0.4
+          name: SkiAddictApp-v0.5-HDMI
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error

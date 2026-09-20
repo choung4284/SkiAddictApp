@@ -20,6 +20,8 @@ public class CourseDetailActivity extends Activity {
     private CourseStore.Course course;
     private int[] values;
     private Preview preview;
+    private TextView projectorStatus;
+    private ProjectorDisplayHost projectorHost;
 
     @Override protected void onCreate(Bundle b){
         super.onCreate(b);
@@ -27,6 +29,19 @@ public class CourseDetailActivity extends Activity {
         values=course.defaults.clone();
         setContentView(build());
         preview.setData(course,values);
+        ProjectorSession.get().selectCourse(course,values);
+        projectorHost=new ProjectorDisplayHost(this,(connected,name)->runOnUiThread(()->updateProjectorStatus(connected,name)));
+    }
+
+    @Override protected void onResume(){
+        super.onResume();
+        ProjectorSession.get().selectCourse(course,values);
+        if(projectorHost!=null) projectorHost.start();
+    }
+
+    @Override protected void onPause(){
+        if(projectorHost!=null) projectorHost.stop();
+        super.onPause();
     }
 
     private int widthDp(){ return getResources().getConfiguration().screenWidthDp; }
@@ -78,10 +93,23 @@ public class CourseDetailActivity extends Activity {
         t.addView(Ui.text(this,course.category.title+" • "+course.subtitle,10,Ui.MUTED,false));
         h.addView(t,new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,1f));
 
+        projectorStatus=Ui.text(this,"● HDMI\nNot connected",9,Ui.MUTED,true);
+        projectorStatus.setGravity(Gravity.CENTER);
+        projectorStatus.setBackground(Ui.round(this,Color.WHITE,12,Ui.BORDER));
+        h.addView(projectorStatus,new LinearLayout.LayoutParams(Ui.dp(this,118),Ui.dp(this,40)));
+
         View back=Ui.button(this,"← HOME",false);
         back.setOnClickListener(v->finish());
-        h.addView(back,new LinearLayout.LayoutParams(Ui.dp(this,88),Ui.dp(this,38)));
+        LinearLayout.LayoutParams backLp=new LinearLayout.LayoutParams(Ui.dp(this,88),Ui.dp(this,38));
+        backLp.leftMargin=Ui.dp(this,5);
+        h.addView(back,backLp);
         return h;
+    }
+
+    private void updateProjectorStatus(boolean connected,String name){
+        if(projectorStatus==null)return;
+        projectorStatus.setText(connected?"● HDMI\nConnected":"● HDMI\nNot connected");
+        projectorStatus.setTextColor(connected?Color.rgb(0,150,80):Ui.MUTED);
     }
 
     private View info(){
@@ -107,13 +135,19 @@ public class CourseDetailActivity extends Activity {
         p.addView(preview,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f));
 
         LinearLayout controls=new LinearLayout(this);
-        controls.addView(Ui.button(this,"▶ Start",true),new LinearLayout.LayoutParams(0,Ui.dp(this,38),1f));
+        View start=Ui.button(this,"▶ Start",true);
+        start.setOnClickListener(v->ProjectorSession.get().play());
+        controls.addView(start,new LinearLayout.LayoutParams(0,Ui.dp(this,38),1f));
         LinearLayout.LayoutParams pp=new LinearLayout.LayoutParams(0,Ui.dp(this,38),1f);
         pp.leftMargin=Ui.dp(this,5);
-        controls.addView(Ui.button(this,"Ⅱ Pause",false),pp);
+        View pause=Ui.button(this,"Ⅱ Pause",false);
+        pause.setOnClickListener(v->ProjectorSession.get().pause());
+        controls.addView(pause,pp);
         LinearLayout.LayoutParams rp=new LinearLayout.LayoutParams(0,Ui.dp(this,38),1f);
         rp.leftMargin=Ui.dp(this,5);
-        controls.addView(Ui.button(this,"↻ Reset",false),rp);
+        View reset=Ui.button(this,"↻ Reset",false);
+        reset.setOnClickListener(v->ProjectorSession.get().reset());
+        controls.addView(reset,rp);
 
         LinearLayout.LayoutParams cp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,Ui.dp(this,38));
         cp.topMargin=Ui.dp(this,5);
@@ -141,6 +175,7 @@ public class CourseDetailActivity extends Activity {
             addSlider(list,course.parameterNames[i],course.min[i],course.max[i],values[i],v->{
                 values[idx]=v;
                 preview.setData(course,values);
+                ProjectorSession.get().updateValues(values);
             });
         }
         LinearLayout.LayoutParams slp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f);
