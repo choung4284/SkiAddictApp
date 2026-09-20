@@ -1,10 +1,9 @@
 <resources>
     <style name="Theme.SkiAddict" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:fontFamily">sans</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#FFFFFF</item>
-        <item name="android:colorAccent">#F21F2F</item>
-        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:colorAccent">@color/red</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
     </style>
 </resources>
