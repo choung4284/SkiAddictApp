@@ -37,7 +37,6 @@ public final class CourseStore {
     public static final List<Course> ALL = Arrays.asList(
         new Course("basic_gates","Basic Gates","ประตูพื้นฐาน","Wide basic gates for learning rhythm and direction.",Category.ALPINE,alpineP(),mins(),maxs(),vals(18,45,50,30,1)),
         new Course("slalom_standard","Slalom (Standard)","สลาลอมมาตรฐาน","Classic left-right slalom with consistent spacing.",Category.ALPINE,alpineP(),mins(),maxs(),vals(20,40,44,28,2)),
-        new Course("dual_line","Dual Line","เลนประตูคู่","Two gate lines for accuracy and directional control.",Category.ALPINE,alpineP(),mins(),maxs(),vals(21,42,45,28,2)),
         new Course("random_gates","Random Gates","ประตูสุ่ม","Randomized gate positions for adaptability.",Category.ALPINE,alpineP(),mins(),maxs(),vals(23,38,40,26,4)),
         new Course("wide_turn","Wide Turn","โค้งกว้าง","Wide flowing turns for edge control.",Category.ALPINE,alpineP(),mins(),maxs(),vals(18,65,60,32,2)),
         new Course("figure_8","Figure 8","เลข 8","Continuous figure-eight turning pattern.",Category.ALPINE,alpineP(),mins(),maxs(),vals(17,58,55,30,4)),
@@ -47,10 +46,7 @@ public final class CourseStore {
         new Course("snowman_trail","Snowman Trail","ทางตุ๊กตาหิมะ","Gentle S turns with friendly snowman markers.",Category.S_CURVE,curveP(),mins(),maxs(),vals(12,64,44,35,1)),
         new Course("follow_leader","Follow the Leader","ตามผู้นำ","Follow the highlighted route precisely.",Category.S_CURVE,curveP(),mins(),maxs(),vals(18,48,55,28,3)),
 
-        new Course("straight_run","Straight Run","เส้นตรง","Straight center-line balance and direction.",Category.STRAIGHT,straightP(),mins(),maxs(),vals(14,40,60,25,1)),
-        new Course("gliding_track","Gliding Track","ฝึกการไถลด์","Stable glide within a straight lane.",Category.STRAIGHT,straightP(),mins(),maxs(),vals(15,36,56,24,1)),
         new Course("edge_control","Edge Control","ฝึกการกดขอบ","Small directional changes while maintaining a straight run.",Category.STRAIGHT,straightP(),mins(),maxs(),vals(16,42,50,28,2)),
-        new Course("balance_stability","Balance & Stability","ฝึกการทรงตัว","Balance targets distributed along the center lane.",Category.STRAIGHT,straightP(),mins(),maxs(),vals(14,32,48,32,2)),
         new Course("reaction_lights","Reaction Lights","ไฟตอบสนอง","React to illuminated targets as they appear.",Category.STRAIGHT,straightP(),mins(),maxs(),vals(20,30,38,26,4)),
 
         new Course("penguin_parade","Penguin Parade","เพนกวินเดินขบวน","Cute penguin trail designed for young skiers.",Category.KIDS,kidsP(),mins(),maxs(),vals(10,38,65,54,66)),

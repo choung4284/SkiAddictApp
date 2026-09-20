@@ -5,9 +5,13 @@
         android:label="Ski Addict Projector"
         android:resizeableActivity="true"
         android:theme="@style/Theme.SkiAddict">
-        <activity android:name=".CourseDetailActivity" android:exported="false" />
+        <activity
+            android:name=".CourseDetailActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="landscape"
             android:exported="true"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode">
             <intent-filter>
