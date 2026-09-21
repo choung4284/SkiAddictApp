@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.Button;\nimport android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -26,6 +26,9 @@ public class MainActivity extends Activity {
     private DeviceProfile device;
     private LinearLayout content;
     private ScrollView contentScroll;
+    private FrameLayout rootFrame;
+    private View normalShell;
+    private HomeMasterView homeMaster;
     private TextView projectorStatus;
     private ProjectorDisplayHost projectorHost;
     private String active="home";
@@ -45,6 +48,25 @@ public class MainActivity extends Activity {
     private int font(int v){return Math.max(8,Math.round(v*device.scale));}
 
     private View buildShell(){
+        rootFrame=new FrameLayout(this);
+        normalShell=buildNormalShell();
+        rootFrame.addView(normalShell,new FrameLayout.LayoutParams(-1,-1));
+
+        homeMaster=new HomeMasterView(this,new HomeMasterView.Actions(){
+            public void interactive(){showInteractive();}
+            public void projector(){showProjectorSetup();}
+            public void presets(){showPresets();}
+            public void settings(){showSettings();}
+            public void basicGates(){showCourse(CourseStore.byId("basic_gates"));}
+            public void sCurve(){showCourse(CourseStore.byId("s_curve"));}
+            public void parallelTurns(){showCourse(CourseStore.byId("wide_turn"));}
+            public void obstacles(){showCourse(CourseStore.byId("obstacles"));}
+        });
+        rootFrame.addView(homeMaster,new FrameLayout.LayoutParams(-1,-1));
+        return rootFrame;
+    }
+
+    private View buildNormalShell(){
         LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setBackgroundColor(Ui.BG);
         root.addView(new BrandHeaderView(this,device),new LinearLayout.LayoutParams(-1,s(device.type.equals("Phone")?70:82)));
 
@@ -80,7 +102,11 @@ public class MainActivity extends Activity {
         for(Button b:navButtons){boolean on=active.equals(b.getTag());b.setTextColor(on?Color.WHITE:Ui.NAVY);b.setTypeface(Typeface.DEFAULT,on?Typeface.BOLD:Typeface.NORMAL);b.setBackground(Ui.round(this,on?Ui.RED:Color.TRANSPARENT,13,Color.TRANSPARENT));}
     }
 
-    private void clear(){content.removeAllViews();styleNav();contentScroll.scrollTo(0,0);}
+    private void clear(){
+        if(normalShell!=null)normalShell.setVisibility(View.VISIBLE);
+        if(homeMaster!=null)homeMaster.setVisibility(View.GONE);
+        content.removeAllViews();styleNav();contentScroll.scrollTo(0,0);
+    }
     private LinearLayout card(){LinearLayout c=Ui.card(this);c.setPadding(s(9),s(7),s(9),s(7));return c;}
     private LinearLayout miniCard(String title){LinearLayout c=card();c.addView(Ui.text(this,title,font(11),Ui.NAVY,true));return c;}
     private TextView muted(String t){return Ui.text(this,t,font(8),Ui.MUTED,false);}
@@ -94,29 +120,12 @@ public class MainActivity extends Activity {
 
     private void updateProjectorStatus(boolean on){if(projectorStatus==null)return;projectorStatus.setText("● "+I18n.t(this,"projector_status")+"\n"+I18n.t(this,on?"connected":"not_connected"));projectorStatus.setTextColor(on?Ui.GREEN:Ui.MUTED);}
 
-    // HOME 1:1 master structure
+    // HOME module: approved master image rendered 1:1 and uniformly scaled
     private void showHome(){
-        active="home";clear();
-        content.addView(pageHeader(I18n.th(this)?"ยินดีต้อนรับสู่ Ski Addict":"Welcome to Ski Addict",I18n.th(this)?"เลือกคอร์สที่คุณต้องการเริ่มฝึก":"Choose a course to start training"),new LinearLayout.LayoutParams(-1,s(58)));
-
-        LinearLayout cats=new LinearLayout(this);cats.setOrientation(LinearLayout.HORIZONTAL);
-        cats.addView(categoryCard(CourseThumbView.ALPINE,"Alpine",I18n.th(this)?"ฝึกเทคนิคพื้นฐาน":"Basic technique",true),weight(1));
-        cats.addView(gap(7));cats.addView(categoryCard(CourseThumbView.SCURVE,"S-Curve",I18n.th(this)?"ฝึกการเลี้ยว":"Turn training",false),weight(1));
-        cats.addView(gap(7));cats.addView(categoryCard(CourseThumbView.KIDS,"Kids",I18n.th(this)?"สำหรับเด็ก\nและผู้เริ่มต้น":"Kids & beginners",false),weight(1));
-        cats.addView(gap(7));cats.addView(categoryCard(CourseThumbView.OBSTACLE,"Obstacles",I18n.th(this)?"ฝึกความท้าทาย":"Challenge training",false),weight(1));
-        content.addView(cats,new LinearLayout.LayoutParams(-1,s(device.type.equals("Phone")?128:145)));
-
-        LinearLayout titleRow=new LinearLayout(this);titleRow.setGravity(Gravity.CENTER_VERTICAL);titleRow.setPadding(0,s(6),0,s(4));
-        titleRow.addView(Ui.text(this,I18n.th(this)?"คอร์สยอดนิยม":"Popular Courses",font(14),Ui.NAVY,true),new LinearLayout.LayoutParams(0,s(30),1));
-        titleRow.addView(Ui.text(this,I18n.th(this)?"ดูทั้งหมด  ›":"View all  ›",font(9),Ui.NAVY,true));content.addView(titleRow);
-
-        LinearLayout courses=new LinearLayout(this);courses.setOrientation(LinearLayout.HORIZONTAL);
-        courses.addView(courseCard(CourseThumbView.BASIC,"BASIC GATES",I18n.th(this)?"เริ่มต้น · 10–20 นาที":"Beginner · 10–20 min",()->showCourse(CourseStore.byId("basic_gates"))),weight(1));
-        courses.addView(gap(7));courses.addView(courseCard(CourseThumbView.SCURVE,"S-CURVE FLOW",I18n.th(this)?"ระดับต้น · 15 นาที":"Beginner · 15 min",()->showCourse(CourseStore.byId("s_curve"))),weight(1));
-        courses.addView(gap(7));courses.addView(courseCard(CourseThumbView.PARALLEL,"PARALLEL TURNS",I18n.th(this)?"ระดับกลาง · 20 นาที":"Intermediate · 20 min",()->showCourse(CourseStore.byId("wide_turn"))),weight(1));
-        courses.addView(gap(7));courses.addView(courseCard(CourseThumbView.FUN,"FUN OBSTACLES",I18n.th(this)?"สนุก · 15 นาที":"Fun · 15 min",()->showCourse(CourseStore.byId("obstacles"))),weight(1));
-        content.addView(courses,new LinearLayout.LayoutParams(-1,s(device.type.equals("Phone")?150:176)));
-        content.addView(gapVertical(16));
+        active="home";
+        styleNav();
+        if(normalShell!=null)normalShell.setVisibility(View.GONE);
+        if(homeMaster!=null)homeMaster.setVisibility(View.VISIBLE);
     }
 
     private LinearLayout categoryCard(int mode,String title,String sub,boolean activeCard){
