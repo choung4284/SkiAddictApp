@@ -7,10 +7,11 @@
         android:label="Ski Addict"
         android:resizeableActivity="true"
         android:theme="@style/Theme.SkiAddict">
-        <activity android:name=".SettingsActivity" android:screenOrientation="landscape" android:exported="false" />
-        <activity android:name=".ProjectorSetupActivity" android:screenOrientation="landscape" android:exported="false" />
-        <activity android:name=".CourseDetailActivity" android:screenOrientation="landscape" android:exported="false" />
-        <activity android:name=".MainActivity" android:screenOrientation="landscape" android:exported="true" android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity>
     </application>
