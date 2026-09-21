@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build and Test HOME APK
 on:
   push:
     branches: [ main ]
@@ -6,9 +6,9 @@ on:
 permissions:
   contents: read
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     env:
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       ANDROID_HOME: /usr/local/lib/android/sdk
@@ -18,17 +18,44 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Install Android 35
+      - name: Install Android SDK
         run: |
           yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
-          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0" "system-images;android-30;google_apis;x86_64" "emulator"
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
       - name: Build debug APK
         run: gradle --no-daemon :app:assembleDebug
+      - name: Run HOME on emulator and capture tablet + phone landscape
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            adb shell wm size 1920x1080
+            adb shell wm density 280
+            adb shell am force-stop fun.skiaddict.projector
+            adb shell am start -n fun.skiaddict.projector/.MainActivity
+            sleep 4
+            mkdir -p screenshots
+            adb exec-out screencap -p > screenshots/home_tablet_1920x1080.png
+            adb shell wm size 1280x720
+            adb shell wm density 420
+            adb shell am force-stop fun.skiaddict.projector
+            adb shell am start -n fun.skiaddict.projector/.MainActivity
+            sleep 4
+            adb exec-out screencap -p > screenshots/home_phone_1280x720.png
+            test -s screenshots/home_tablet_1920x1080.png
+            test -s screenshots/home_phone_1280x720.png
       - uses: actions/upload-artifact@v4
         with:
-          name: SkiAddictApp-v1.3-HOME-Pixel-Master
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: SkiAddictApp-v1.4-HOME-Tested
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            screenshots/home_tablet_1920x1080.png
+            screenshots/home_phone_1280x720.png
           if-no-files-found: error
