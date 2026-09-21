@@ -9,7 +9,7 @@ public final class I18n {
     public static String t(Context c,String k){
         boolean th=th(c);
         switch(k){
-            case "home":return th?"หน้าหลัก":"Home"; case "interactive":return th?"โหมดโต้ตอบ":"Interactive"; case "projector_setup":return th?"ตั้งค่าโปรเจคเตอร์":"Projector Setup"; case "saved_presets":return th?"พรีเซ็ตที่บันทึกไว้":"Saved Presets"; case "settings":return th?"ตั้งค่า":"Settings";
+            case "home":return th?"หน้าหลัก":"Home"; case "back_home":return th?"← หน้าหลัก":"← HOME"; case "interactive":return th?"โหมดโต้ตอบ":"Interactive"; case "projector_setup":return th?"ตั้งค่าโปรเจคเตอร์":"Projector Setup"; case "saved_presets":return th?"พรีเซ็ตที่บันทึกไว้":"Saved Presets"; case "settings":return th?"ตั้งค่า":"Settings";
             case "projector_status":return th?"โปรเจคเตอร์":"Projector"; case "connected":return th?"เชื่อมต่อแล้ว":"Connected"; case "not_connected":return th?"ยังไม่เชื่อมต่อ":"Not connected";
             case "start":return th?"เริ่ม":"Start"; case "pause":return th?"หยุดชั่วคราว":"Pause"; case "reset":return th?"รีเซ็ต":"Reset"; case "parameters":return th?"พารามิเตอร์":"Parameters";
             case "beginner":return th?"ระดับเริ่มต้น":"Beginner"; case "course_detail":return th?"รายละเอียดคอร์ส":"Course Detail";
@@ -21,5 +21,7 @@ public final class I18n {
         }return k;
     }
     public static String param(Context c,String p){if(!th(c))return p;switch(p){case "Speed":return "ความเร็ว";case "Gate Width":return "ความกว้างประตู";case "Gate Spacing":return "ระยะห่างประตู";case "Gate Size":return "ขนาดประตู";case "Difficulty":return "ระดับความยาก";case "Stage Count":return "จำนวนสเตจ";}return p;}
+    public static String category(Context c,CourseStore.Category cat){if(!th(c))return cat.title;switch(cat){case ALPINE:return "Alpine";case S_CURVE:return "S-Curve";case STRAIGHT:return "Straight";case KIDS:return "Kids";case OBSTACLES:return "Obstacles";}return cat.title;}
+    public static String courseSummary(Context c,CourseStore.Course course){if(course==null)return "";if(!th(c))return course.summary;switch(course.id){case "basic_gates":return "ฝึกจังหวะและทิศทางด้วยประตูพื้นฐาน";case "s_curve":return "ฝึกการเลี้ยวต่อเนื่องเป็นรูปตัว S";case "wide_turn":return "ฝึกโค้งกว้างและการควบคุมขอบสกี";case "obstacles":return "ฝึกหลบสิ่งกีดขวางและการตอบสนอง";default:return course.summary;}}
     public static String courseTitle(Context c,CourseStore.Course course){if(course==null)return ""; if(!th(c))return course.title;switch(course.id){case "basic_gates":return "ประตูพื้นฐาน";case "s_curve":return "เส้นโค้งตัว S";case "wide_turn":return "โค้งกว้าง";case "obstacles":return "หลบสิ่งกีดขวาง";default:return course.title;}}
 }
