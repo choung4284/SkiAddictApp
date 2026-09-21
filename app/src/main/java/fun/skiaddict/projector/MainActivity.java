@@ -1,7 +1,7 @@
 package fun.skiaddict.projector;
 
 import android.app.Activity;
-import android.content.ColorStateList;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -279,10 +279,10 @@ public class MainActivity extends Activity {
 
         LinearLayout r3=new LinearLayout(this);r3.setOrientation(LinearLayout.HORIZONTAL);r3.setPadding(0,dp(7),0,0);
         LinearLayout dev=miniCard("</>  "+I18n.t(this,"developer_mode"));dev.setBackground(Ui.round(this,Color.rgb(255,247,248),16,Color.rgb(255,174,184)));dev.addView(small(I18n.t(this,"developer_note")));
-        toggle(dev,I18n.t(this,"enable_developer"),DeveloperPrefs.enabled(this),DeveloperPrefs::setEnabled);
-        toggle(dev,I18n.t(this,"projector_mirror"),DeveloperPrefs.mirror(this),DeveloperPrefs::setMirror);
-        toggle(dev,I18n.t(this,"debug_overlay"),DeveloperPrefs.overlay(this),DeveloperPrefs::setOverlay);
-        toggle(dev,I18n.t(this,"safe_area"),DeveloperPrefs.safeArea(this),DeveloperPrefs::setSafeArea);
+        toggle(dev,I18n.t(this,"enable_developer"),DeveloperPrefs.enabled(this),v->DeveloperPrefs.setEnabled(this,v));
+        toggle(dev,I18n.t(this,"projector_mirror"),DeveloperPrefs.mirror(this),v->DeveloperPrefs.setMirror(this,v));
+        toggle(dev,I18n.t(this,"debug_overlay"),DeveloperPrefs.overlay(this),v->DeveloperPrefs.setOverlay(this,v));
+        toggle(dev,I18n.t(this,"safe_area"),DeveloperPrefs.safeArea(this),v->DeveloperPrefs.setSafeArea(this,v));
         r3.addView(dev,new LinearLayout.LayoutParams(0,-2,1));
         LinearLayout about=miniCard(I18n.t(this,"about"));line(about,"Ski Addict","Indoor Ski Club");line(about,I18n.t(this,"app_version"),"0.8 Partner Demo");line(about,I18n.th(this)?"บิลด์":"Build","2026.09.21");LinearLayout.LayoutParams alp=new LinearLayout.LayoutParams(0,-2,1);alp.leftMargin=dp(7);r3.addView(about,alp);all.addView(r3);
     }
@@ -307,6 +307,4 @@ public class MainActivity extends Activity {
     private void seek(LinearLayout c,String name,int min,int max,int val,IntChange f){LinearLayout r=new LinearLayout(this);r.setGravity(Gravity.CENTER_VERTICAL);r.addView(Ui.text(this,name,9,Ui.MUTED,false),new LinearLayout.LayoutParams(dp(115),dp(30)));SeekBar s=new SeekBar(this);s.setMax(max-min);s.setProgress(val-min);s.setProgressTintList(ColorStateList.valueOf(Ui.RED));s.setThumbTintList(ColorStateList.valueOf(Ui.RED));TextView n=Ui.text(this,String.valueOf(val),9,Ui.NAVY,true);s.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){public void onProgressChanged(SeekBar b,int x,boolean from){int v=min+x;n.setText(String.valueOf(v));f.set(v);}public void onStartTrackingTouch(SeekBar b){}public void onStopTrackingTouch(SeekBar b){}});r.addView(s,new LinearLayout.LayoutParams(0,dp(30),1));r.addView(n,new LinearLayout.LayoutParams(dp(42),dp(30)));c.addView(r);}
     interface BoolChange{void set(boolean b);}
     private void toggle(LinearLayout c,String name,boolean on,BoolChange f){LinearLayout r=new LinearLayout(this);r.setGravity(Gravity.CENTER_VERTICAL);r.addView(Ui.text(this,name,9,Ui.MUTED,false),new LinearLayout.LayoutParams(0,dp(32),1));Switch s=new Switch(this);s.setChecked(on);if(f!=null)s.setOnCheckedChangeListener((b,v)->f.set(v));r.addView(s);c.addView(r);}
-    interface CtxBoolChange{void set(android.content.Context c,boolean b);}
-    private void toggle(LinearLayout c,String name,boolean on,CtxBoolChange f){LinearLayout r=new LinearLayout(this);r.setGravity(Gravity.CENTER_VERTICAL);r.addView(Ui.text(this,name,9,Ui.MUTED,false),new LinearLayout.LayoutParams(0,dp(32),1));Switch s=new Switch(this);s.setChecked(on);if(f!=null)s.setOnCheckedChangeListener((b,v)->f.set(MainActivity.this,v));r.addView(s);c.addView(r);}
 }
