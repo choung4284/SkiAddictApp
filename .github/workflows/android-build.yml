@@ -53,7 +53,7 @@ jobs:
             test -s screenshots/home_phone_1280x720.png
       - uses: actions/upload-artifact@v4
         with:
-          name: SkiAddictApp-v1.4-HOME-Tested
+          name: SkiAddictApp-v1.4-HOME-Tested-v2
           path: |
             app/build/outputs/apk/debug/app-debug.apk
             screenshots/home_tablet_1920x1080.png
