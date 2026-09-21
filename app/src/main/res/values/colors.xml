@@ -1,7 +1,6 @@
 <resources>
-    <color name="red">#F21F2F</color>
-    <color name="navy">#172231</color>
-    <color name="bg">#F6F8FA</color>
-    <color name="muted">#66707D</color>
-    <color name="border">#E2E6EA</color>
+    <color name="brand_red">#F21F2F</color>
+    <color name="brand_navy">#172231</color>
+    <color name="brand_bg">#F6F8FA</color>
+    <color name="icon_background">#FFFFFF</color>
 </resources>

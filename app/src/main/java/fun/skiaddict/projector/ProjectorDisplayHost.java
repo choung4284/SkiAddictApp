@@ -20,20 +20,16 @@ public final class ProjectorDisplayHost implements DisplayManager.DisplayListene
     }
 
     public void start(){
-        if(!registered){
-            displayManager.registerDisplayListener(this,null);
-            registered=true;
-        }
+        if(!registered){ displayManager.registerDisplayListener(this,null); registered=true; }
         refresh();
     }
 
     public void stop(){
-        if(registered){
-            displayManager.unregisterDisplayListener(this);
-            registered=false;
-        }
+        if(registered){ displayManager.unregisterDisplayListener(this); registered=false; }
         dismiss();
     }
+
+    public void refreshNow(){ refresh(); }
 
     private void refresh(){
         Display[] displays=displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
@@ -42,26 +38,19 @@ public final class ProjectorDisplayHost implements DisplayManager.DisplayListene
             if(listener!=null) listener.onProjectorStatus(false,"");
             return;
         }
-
         Display target=displays[0];
         if(presentation==null || presentation.getDisplay().getDisplayId()!=target.getDisplayId()){
             dismiss();
             try{
                 presentation=new ProjectorPresentation(activity,target);
                 presentation.show();
-            }catch(Exception e){
-                presentation=null;
-            }
+            }catch(Exception e){ presentation=null; }
         }
-
         if(listener!=null) listener.onProjectorStatus(presentation!=null,target.getName());
     }
 
     private void dismiss(){
-        if(presentation!=null){
-            try{ presentation.dismiss(); }catch(Exception ignored){}
-            presentation=null;
-        }
+        if(presentation!=null){ try{ presentation.dismiss(); }catch(Exception ignored){} presentation=null; }
     }
 
     @Override public void onDisplayAdded(int displayId){ refresh(); }

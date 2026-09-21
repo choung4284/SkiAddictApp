@@ -102,6 +102,14 @@ public final class I18n {
             case "same_layout": return th?"มือถือและแท็บเล็ตใช้เลย์เอาต์เดียวกัน":"Phone and tablet use the same layout";
             case "tap_course": return th?"แตะคอร์สเพื่อเปิดมุมมองสดและพารามิเตอร์":"Tap a course to open Live View and parameters";
             case "projector_status": return th?"โปรเจคเตอร์":"Projector";
+            case "developer_mode": return th?"โหมด Developer":"Developer Mode";
+            case "enable_developer": return th?"เปิดใช้งาน Developer Mode":"Enable Developer Mode";
+            case "projector_mirror": return th?"Projector Mirror Preview":"Projector Mirror Preview";
+            case "debug_overlay": return th?"แสดง Debug Overlay":"Show Debug Overlay";
+            case "safe_area": return th?"แสดง Safe Area":"Show Safe Area";
+            case "developer_note": return th?"เมื่อเปิด Developer Mode และ Mirror ภาพ Projector จะจำลองหน้าจอ Tablet / Mobile เพื่อเช็ก Layout":"When Developer Mode + Mirror is enabled, the projector duplicates the Tablet / Mobile layout for checking.";
+            case "developer_on": return th?"เปิด Developer Mode แล้ว":"Developer Mode enabled";
+            case "developer_off": return th?"ปิด Developer Mode แล้ว":"Developer Mode disabled";
         }
         return key;
     }

@@ -59,8 +59,9 @@ public final class Ui {
     private static void go(Activity a,Class<?> cls){
         if(a.getClass()==cls)return;
         Intent i=new Intent(a,cls);
-        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         a.startActivity(i);
+        a.overridePendingTransition(0,0);
     }
 
     private static Button nav(Context c,String s,boolean active,Runnable r){

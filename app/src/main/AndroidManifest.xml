@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application android:allowBackup="true" android:hardwareAccelerated="true" android:label="Ski Addict Projector" android:resizeableActivity="true" android:theme="@style/Theme.SkiAddict">
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="Ski Addict"
+        android:resizeableActivity="true"
+        android:theme="@style/Theme.SkiAddict">
         <activity android:name=".SettingsActivity" android:screenOrientation="landscape" android:exported="false" />
         <activity android:name=".ProjectorSetupActivity" android:screenOrientation="landscape" android:exported="false" />
         <activity android:name=".CourseDetailActivity" android:screenOrientation="landscape" android:exported="false" />
