@@ -2,13 +2,7 @@ plugins { id 'com.android.application' }
 android {
     namespace 'fun.skiaddict.projector'
     compileSdk 35
-    defaultConfig {
-        applicationId 'fun.skiaddict.projector'
-        minSdk 26
-        targetSdk 35
-        versionCode 8
-        versionName '0.8-partner-demo-polished-ui'
-    }
+    defaultConfig { applicationId 'fun.skiaddict.projector'; minSdk 26; targetSdk 35; versionCode 9; versionName '0.9-responsive-device-detect-official-logo' }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
     buildTypes {
         debug { minifyEnabled false }
