@@ -1,8 +1,8 @@
 {
-  "versionCode": 38,
-  "versionName": "0.38.0",
+  "versionCode": 39,
+  "versionName": "0.39.0",
   "minSdk": 26,
-  "apkUrl": "https://github.com/choung4284/SkiAddictApp/releases/download/v0.38.0/Ski-Addict-v0.38-Version-Top-Right.apk",
-  "size": 47580934,
-  "sha256": "e8dec227ac9e5f4dba04147646bf7c3c5d0f78c7a887d7d28d820d1a016d8cc4"
+  "apkUrl": "https://github.com/choung4284/SkiAddictApp/releases/download/v0.39.0/Ski-Addict-v0.39-Auto-Min-Zoom.apk",
+  "size": 47581030,
+  "sha256": "011e1c6e5f6825757486fa06c8831b7f2c872c0595b94a4d0969f1d8580cb966"
 }
