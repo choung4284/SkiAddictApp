@@ -1,8 +1,8 @@
 {
-  "versionCode": 36,
-  "versionName": "0.36.0",
+  "versionCode": 38,
+  "versionName": "0.38.0",
   "minSdk": 26,
-  "apkUrl": "https://github.com/choung4284/SkiAddictApp/releases/download/v0.36.0/Ski-Addict-v0.36-Settings-Fullscreen.apk",
-  "size": 47580670,
-  "sha256": "61fa3f4a31d9935e8a75ad9cd520e052e3fe6c04aec29c38fcb808f552455cb7"
+  "apkUrl": "https://github.com/choung4284/SkiAddictApp/releases/download/v0.38.0/Ski-Addict-v0.38-Version-Top-Right.apk",
+  "size": 47580934,
+  "sha256": "e8dec227ac9e5f4dba04147646bf7c3c5d0f78c7a887d7d28d820d1a016d8cc4"
 }
