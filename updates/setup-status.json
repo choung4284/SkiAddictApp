@@ -1,6 +1,8 @@
 {
-  "status": "setup-in-progress",
-  "localVersion": "0.34.0",
-  "downloadAvailable": false,
-  "automaticUpdatesEnabled": false
+  "localVersion": "0.35.0",
+  "automaticUpdatesEnabled": true,
+  "status": "apk-updater-published",
+  "downloadAvailable": true,
+  "installationRequiresConfirmation": true,
+  "checksWhileAppOpen": true
 }
